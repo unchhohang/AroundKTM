@@ -1,3 +1,290 @@
 <resources>
     <string name="app_name">Around_KTM</string>
+    <string name="hotline">HotLine</string>
+    <string name="add_route">Add Route</string>
+    <string name="feedback">Feed Back</string>
+    <string name="help">Help</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="manual">
+                Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+        Start or stop navigation
+        On your Android phone or tablet, open the Google Maps app Google Maps.
+        Search for a place or tap it on the map.
+        In the bottom right, tap Directions. If you touch and hold the button instead, you’ll start navigation and can skip steps 4-6.
+        Optional: To add additional destinations, go to the top right and tap More More and then Add stop. You can add up to 9 stops. When you are finished, tap Done.
+        Choose one of the following:
+        Driving: Driving
+        Transit: Transit
+        Walking: Walking
+        Rides: Ride Services
+        Cycling: Cycling
+        If other routes are available, they will be shown in gray on the map. To follow an alternate route, tap the gray line.
+        To start navigation, tap Start Start. If you see “Searching for GPS,” your phone is trying to get a GPS signal. For example, you might be in or near a tunnel, parking garage, or other location where there’s no GPS signal.
+        To stop or cancel navigation, go to the bottom left and tap Close Close.
+
+
+        Tips:
+
+        You can see traffic info, public transit options and local places of interest in just a few seconds. Learn more about nearby places and travel.
+        To see the map from your point of view, tap the compass.
+        Learn how to add a shortcut to get directions to a place you travel to often, like work or home.
+
+    </string>
+    <string name="price">
+        price : 25
+        card discount price : 10
+    </string>
 </resources>

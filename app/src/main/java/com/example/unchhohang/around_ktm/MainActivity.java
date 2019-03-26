@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 
 
+import com.example.unchhohang.around_ktm.RouteLogic.Stop;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,8 +27,14 @@ import com.
         google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -35,10 +42,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "Main activity";
     GoogleMap m_map;
-    boolean mapReady=false;
+    boolean mapReady = false;
 
 
-    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location mLastKnownLocation;
@@ -72,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mapReady)
+                if (mapReady)
                     m_map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             }
         });
@@ -81,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         btnSatellite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mapReady)
+                if (mapReady)
                     m_map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             }
         });
@@ -90,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         btnHybrid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mapReady)
+                if (mapReady)
                     m_map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             }
         });
@@ -110,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
 
-                        switch (menuItem.getItemId()){
+                        switch (menuItem.getItemId()) {
                             case R.id.nav_hotline:
                                 getSupportFragmentManager().beginTransaction()
                                         .replace(R.id.layout_main, new fragment_hotline()).commit();
@@ -199,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mLastKnownLocation = null;
                 getLocationPermission();
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -230,14 +237,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 });
             }
-        } catch(SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
 
     @Override
-    public void onMapReady(GoogleMap map){
-        mapReady=true;
+    public void onMapReady(GoogleMap map) {
+        mapReady = true;
         m_map = map;
 
         // Do other setup activities here too, as described elsewhere in this tutorial.
@@ -247,6 +254,63 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+
+        //Stops tyring to
+        Stop s1 = new Stop("lagankhel_p", 27.667113, 85.322346);
+
+        //markers
+
+
+        //Hash map for marker
+//        Map<String, String> stops = new HashMap<String, String>();
+//        stops.put("lagankhel_p", "27.667113, 85.322346");
+//        stops.put("patan_hospital_p", "27.668387, 85.321663");
+//        stops.put("kumaripati_p", "27.670801, 85.319957");
+//        stops.put("manbhawan_p", "27.672074, 85.315558");
+//        stops.put("jawlakhel_p", "27.672632, 85.313707");
+//        stops.put("pulchowk_p", "27.676070, 85.315721");
+//        stops.put("harihar_bhawan_pulchowk_p", "27.681087, 85.317402");
+//        stops.put("jwagal_kupondol_p", "27.685257, 85.318100");
+//        stops.put("kandewatathan_kupondol_p", "27.686757, 85.317133");
+//        stops.put("thaptahali_p", "27.687845, 85.316307");
+//        stops.put("maitighar_p", "27.694206, 85.319275");
+//        stops.put("singhadurbar_p", "27.694805, 85.320175");
+//        stops.put("bhadrakali_mandir_p", "27.699051, 85.317503");
+//        stops.put("sahid_gate_p", "27.699298, 85.317734");
+//        stops.put("ratnapark_p", "27.706788, 85.314730");
+//        stops.put("bhirkutimandap_p", "27.700914, 85.316609");
+//        stops.put("bhadrakali_mandir_n", "27.699298, 85.317734");
+//        stops.put("maitighar_n", "27.694088, 85.319397");
+//        stops.put("thapathali_n", "27.690458, 85.317760");
+//        stops.put("kupondole_n", "27.687641, 85.316763");
+//        stops.put("jwagal_kupondol_n", "27.685452, 85.318223");
+//        stops.put("harihar_bhawan_pulchowk_n", "27.681149, 85.317630");
+//        stops.put("pulchow_n", "27.676821, 85.316165");
+//        stops.put("jawalkhel_n", "27.672634, 85.313930");
+//        stops.put("manbhawan_n", "27.672153, 85.315956");
+//        stops.put("kumaripati_n", "27.670687, 85.320493");
+//        stops.put("patan_hospital_n", "27.669727, 85.321909");
+//        stops.put("lagankhel_n", "27.667031, 85.322473");
+//
+//        //Add marker on the map and add data object
+//        for (Map.Entry<String, String> entry : stops.entrySet()) {
+//            System.out.println(entry.getKey() + " = " + entry.getValue());
+//            String[] parts = entry.getValue().split(",\\s");
+//            Double part1 = Double.parseDouble(parts[0]);
+//            Double part2 = Double.parseDouble(parts[1]);
+//            System.out.println(part2);
+//
+//            //Array lis for stroing markers
+//            ArrayList<Marker> markers = new ArrayList<>();
+//            markers.add(m_map.addMarker(new MarkerOptions()
+//                    .position(new LatLng(part1, part2))
+//                    .title(entry.getKey())));
+//        }
+        Marker destination = m_map.addMarker(new MarkerOptions()
+                .position(new LatLng(27.667031, 85.322473))
+                .draggable(true));
+        destination.getPosition();
+
 
     }
 
@@ -273,5 +337,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        return super.onOptionsItemSelected(item);
 //    }
 
+    public Location getLastLocation(){
+        return mLastKnownLocation;
+    }
 
 }
+

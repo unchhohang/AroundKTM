@@ -1,5 +1,6 @@
 package com.example.unchhohang.around_ktm;
 
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -16,8 +17,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
+import com.example.unchhohang.around_ktm.RouteLogic.InitiatingRace;
+import com.example.unchhohang.around_ktm.RouteLogic.ReadyToRace;
 import com.example.unchhohang.around_ktm.RouteLogic.Stop;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -30,13 +34,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     private DrawerLayout drawerLayout;
 
@@ -45,17 +51,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     boolean mapReady = false;
 
 
-    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION= 1;
     private boolean mLocationPermissionGranted;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private Location mLastKnownLocation;
-    private static final int DEFAULT_ZOOM = 15;
+
+    //variable for source position
+    Task<Location> locationResult;
+    public Location mLastKnownLocation;
+    public Location lastLocation;
+    public static final int DEFAULT_ZOOM = 15;
+
+    //variable for marker destination posistion
+    private Marker destination;
+    private LatLng positionOfDestination;
+
+    Stop source;
+    Stop desti;
+    Stop start;
+    Stop end;
+
+    Double sourLat;
+    Double sourLog;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Initiating the default destination marker position
+        positionOfDestination = new LatLng(27.660372, 85.322682);
 
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -165,12 +191,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
          * onRequestPermissionsResult.
          */
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
         } else {
             ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
@@ -212,22 +238,45 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getDeviceLocation() {
+
         /*
          * Get the best and most recent location of the device, which may be null in rare
          * cases when a location is not available.
          */
+        Log.i("tag getDevice","I am the get Device button");
         try {
             if (mLocationPermissionGranted) {
-                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+
+                locationResult = mFusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task task) {
+                        Log.i("tag source", "I am first location");
                         if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
+                            Log.i("tag source", "I am first location vitra xire");
                             mLastKnownLocation = (Location) task.getResult();
-                            m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            if(mLastKnownLocation != null){
+                                Log.i("tag source", "I am first location ajhai vitra xire");
+
+                                // Set the map's camera position to the current location of the device.
+
+                                m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(mLastKnownLocation.getLatitude(),
+                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+
+                                sourLat = mLastKnownLocation.getLatitude();
+                                sourLog = mLastKnownLocation.getLongitude();
+
+                                source = new Stop("Source", sourLat , sourLog);
+                                desti = new Stop("destination", getdestinationLocation().latitude, getdestinationLocation().longitude);
+
+                                ReadyToRace readyToRace = new ReadyToRace();
+                                List<Stop> paths = readyToRace.findingPath(source, desti);
+                            for(int i = 0; i < paths.size(); i++){
+                                Log.i("tag path","I am the path " + paths.get(i).name);
+                            }
+
+                            }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
@@ -246,6 +295,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap map) {
         mapReady = true;
         m_map = map;
+        m_map.setOnInfoWindowClickListener(this);
 
         // Do other setup activities here too, as described elsewhere in this tutorial.
 
@@ -255,8 +305,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
 
+
         //Stops tyring to
-        Stop s1 = new Stop("lagankhel_p", 27.667113, 85.322346);
+//        Stop s1 = new Stop("lagankhel_p", 27.667113, 85.322346);
+//        Stop s2 = new Stop("patan_hospital_p",27.668387, 85.321663);
+//        Stop s3 = new Stop("kumaripati_p",27.670801, 85.319957);
+//        Stop s4 = new Stop("manbhawan_p",27.672074, 85.315558);
+//        Stop s5 = new Stop("jawlakhel_p",27.672632, 85.313707);
+//        Stop s6 = new Stop("pulchowk_p",27.676070, 85.315721);
+//        Stop s7 = new Stop("harihar_bhawan_pulchowk_p",27.681087, 85.317402);
+//        Stop s8 = new Stop("jwagal_kupondol_p",27.685257, 85.318100);
+//        Stop s9 = new Stop("kandewatathan_kupondol_p",27.686757, 85.317133);
+//        Stop s10 = new Stop("thaptahali_p",27.687845, 85.316307);
+//        Stop s11 = new Stop("maitighar_p",27.694206, 85.319275);
+//        Stop s12 = new Stop("singhadurbar_p",27.694805, 85.320175);
+//        Stop s13 = new Stop("bhadrakali_mandir_p",27.699051, 85.317503);
+//        Stop s14 = new Stop("sahid_gate_p",27.699298, 85.317734);
+//        Stop s15 = new Stop("ratnapark_p",27.706788, 85.314730);
+//        Stop s16 = new Stop("bhirkutimandap_p",27.700914, 85.316609);
+//        Stop s17 = new Stop("bhadrakali_mandir_n",27.699298, 85.317734);
+//        Stop s18 = new Stop("maitighar_n",27.694088, 85.319397);
+//        Stop s19 = new Stop("thapathali_n",27.690458, 85.317760);
+//        Stop s20 = new Stop("kupondole_n",27.687641, 85.316763);
+//        Stop s22 = new Stop("jwagal_kupondol_n",27.685452, 85.318223);
+//        Stop s23 = new Stop("harihar_bhawan_pulchowk_n",27.681149, 85.317630);
+//        Stop s24 = new Stop("pulchow_n",27.676821, 85.316165);
+//        Stop s25 = new Stop("jawalkhel_n",27.672634, 85.313930);
+//        Stop s26 = new Stop("manbhawan_n",27.672153, 85.315956);
+//        Stop s27 = new Stop("kumaripati_n",27.670687, 85.320493);
+//        Stop s28 = new Stop("patan_hospital_n",27.669727, 85.321909);
+//        Stop s29 = new Stop("lagankhel_n",27.667031, 85.322473);
+
 
         //markers
 
@@ -306,13 +385,33 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                    .position(new LatLng(part1, part2))
 //                    .title(entry.getKey())));
 //        }
-        Marker destination = m_map.addMarker(new MarkerOptions()
-                .position(new LatLng(27.667031, 85.322473))
+
+        destination = m_map.addMarker(new MarkerOptions()
+                .position(new LatLng(27.667113,85.322346))
+                .title("Set destination")
                 .draggable(true));
-        destination.getPosition();
+        destination.showInfoWindow();
 
+        m_map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker marker) {
 
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {
+
+            }
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+                positionOfDestination = marker.getPosition();
+
+            }
+        });
     }
+
+
 
 
 //    @Override
@@ -337,8 +436,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        return super.onOptionsItemSelected(item);
 //    }
 
-    public Location getLastLocation(){
-        return mLastKnownLocation;
+    public Location getSourceLocation(){
+        return lastLocation;
+    }
+    public LatLng getdestinationLocation() { return positionOfDestination; };
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        getDeviceLocation();
+        Log.i("tag destination", "destination latlng the hustler:" + getdestinationLocation().latitude +" " + getdestinationLocation());
     }
 
 }

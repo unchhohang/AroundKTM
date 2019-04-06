@@ -1,27 +1,42 @@
 package com.example.unchhohang.around_ktm.RouteLogic;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
-//Class for stop made to use for nodes
+//Class for stop made to use for Stops
 public class Stop {
-    String name;
+    public final String name;
     double lat;
     double lng;
-    ArrayList<Stop> neighbour;
+    double gScore;
+    double hScore;
+    double fScore;
+    Stop parent;
+    Edge[] neighbour;
 
-
+    //constructor for stop latlng and name
     public Stop(String name, double lat, double lng) {
         this.name = name;
         this.lat = lat;
         this.lng = lng;
+
     }
 
-    public void addNeighbour(Stop stop){
-        neighbour.add(stop);
+    public LatLng getLatLng(){
+        return (new LatLng(lat, lng));
     }
+
+
 
     public int getNoNeighbour(){
-        return neighbour.size();
+        return neighbour.length;
     }
+
+
+
+
+
+
 
 }

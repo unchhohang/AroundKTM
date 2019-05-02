@@ -2,6 +2,8 @@ package com.example.unchhohang.around_ktm;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +25,8 @@ import android.widget.Toast;
 import com.example.unchhohang.around_ktm.RouteLogic.InitiatingRace;
 import com.example.unchhohang.around_ktm.RouteLogic.ReadyToRace;
 import com.example.unchhohang.around_ktm.RouteLogic.Stop;
+import com.example.unchhohang.around_ktm.RouteLogic.StopApi;
+import com.example.unchhohang.around_ktm.RouteLogic.Stops;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,17 +34,40 @@ import com.google.android.gms.maps.GoogleMap;
 import com.
         google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
+import org.joda.time.DateTime;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
@@ -72,6 +99,14 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
     Double sourLat;
     Double sourLog;
+    //for path
+    List<Stop> paths;
+
+    //for direction
+    private static final int overview = 0;
+
+    //for hashmap of stop
+    HashMap<String, Stop> dicStops = new HashMap<>();
 
 
 
@@ -94,10 +129,8 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
         // Construct a GeoDataClient.
         //mGeoDataClient = Places.getGeoDataClient(this, null);
-
         // Construct a PlaceDetectionClient.
         //mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
-
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -133,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
         //Drawer layout switching
         drawerLayout = findViewById(R.id.drawer_layout);
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -172,6 +204,39 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         );
 
 
+        //Running Retrofit
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.64/around_ktm_api/public/")
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit =
+                builder
+                        .client(
+                                httpClient.build()
+                        )
+                        .build();
+        StopApi stopApi = retrofit.create(StopApi.class);
+        Call<Stops> call = stopApi.getStops();
+        call.enqueue(new Callback<Stops>() {
+            @Override
+            public void onResponse(Call<Stops> call, Response<Stops> response) {
+                List<Stop> stops = response.body().getStops();
+
+                for(Stop stop : stops){
+
+                    dicStops.put(stop.getStopId(), stop);
+                    Log.i("Retrofit","" + dicStops);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Stops> call, Throwable t) {
+                Log.i("Retrofit", " " + t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -264,18 +329,35 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                                         new LatLng(mLastKnownLocation.getLatitude(),
                                                 mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
 
-                                sourLat = mLastKnownLocation.getLatitude();
-                                sourLog = mLastKnownLocation.getLongitude();
-
-                                source = new Stop("Source", sourLat , sourLog);
+                                source = new Stop("Source", mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
                                 desti = new Stop("destination", getdestinationLocation().latitude, getdestinationLocation().longitude);
 
-                                ReadyToRace readyToRace = new ReadyToRace();
-                                List<Stop> paths = readyToRace.findingPath(source, desti);
-                            for(int i = 0; i < paths.size(); i++){
-                                Log.i("tag path","I am the path " + paths.get(i).name);
-                            }
+                                ReadyToRace readyToRace = new ReadyToRace(dicStops);
+                                paths = readyToRace.findingPath(source, desti);
+                                for(int i = 0; i < paths.size(); i++){
+                                    Log.i("tag path","I am the path " + paths.get(i).name);
+                                    m_map.addMarker(new MarkerOptions()
+                                            .position(paths.get(i).getLatLng())
+                                            .title(paths.get(i).name)
+                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.bus)));
+                                }
+                                //for getting the first stop in direction api
+                                Stop firstStop = paths.get(0);
+                                //get direction from source to start
+                                String sourceAddress =  getCompleteAddressString(source.getLatitude(), source.getLongitude());
+                                String firstStopAddress = getCompleteAddressString(firstStop.getLatitude(), firstStop.getLongitude());
 
+                                DirectionsResult results = getDirectionsDetails(sourceAddress, firstStopAddress);
+                                Log.i("tag directions", "Hope got direction");
+
+//                                if (results != null) {
+//                                    addPolyline(results, m_map);
+////                                    positionCamera(results.routes[overview], m_map);
+//                                Log.i("tag polylines", "going into polyline section");
+//                                }
+//
+//                                Log.i("tag address", "source address :" + sourceAddress);
+//                                Log.i("tag address", "destination address :" + firstStopAddress);
                             }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
@@ -298,7 +380,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         m_map.setOnInfoWindowClickListener(this);
 
         // Do other setup activities here too, as described elsewhere in this tutorial.
-
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
 
@@ -306,71 +387,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         getDeviceLocation();
 
 
-        //Stops tyring to
-//        Stop s1 = new Stop("lagankhel_p", 27.667113, 85.322346);
-//        Stop s2 = new Stop("patan_hospital_p",27.668387, 85.321663);
-//        Stop s3 = new Stop("kumaripati_p",27.670801, 85.319957);
-//        Stop s4 = new Stop("manbhawan_p",27.672074, 85.315558);
-//        Stop s5 = new Stop("jawlakhel_p",27.672632, 85.313707);
-//        Stop s6 = new Stop("pulchowk_p",27.676070, 85.315721);
-//        Stop s7 = new Stop("harihar_bhawan_pulchowk_p",27.681087, 85.317402);
-//        Stop s8 = new Stop("jwagal_kupondol_p",27.685257, 85.318100);
-//        Stop s9 = new Stop("kandewatathan_kupondol_p",27.686757, 85.317133);
-//        Stop s10 = new Stop("thaptahali_p",27.687845, 85.316307);
-//        Stop s11 = new Stop("maitighar_p",27.694206, 85.319275);
-//        Stop s12 = new Stop("singhadurbar_p",27.694805, 85.320175);
-//        Stop s13 = new Stop("bhadrakali_mandir_p",27.699051, 85.317503);
-//        Stop s14 = new Stop("sahid_gate_p",27.699298, 85.317734);
-//        Stop s15 = new Stop("ratnapark_p",27.706788, 85.314730);
-//        Stop s16 = new Stop("bhirkutimandap_p",27.700914, 85.316609);
-//        Stop s17 = new Stop("bhadrakali_mandir_n",27.699298, 85.317734);
-//        Stop s18 = new Stop("maitighar_n",27.694088, 85.319397);
-//        Stop s19 = new Stop("thapathali_n",27.690458, 85.317760);
-//        Stop s20 = new Stop("kupondole_n",27.687641, 85.316763);
-//        Stop s22 = new Stop("jwagal_kupondol_n",27.685452, 85.318223);
-//        Stop s23 = new Stop("harihar_bhawan_pulchowk_n",27.681149, 85.317630);
-//        Stop s24 = new Stop("pulchow_n",27.676821, 85.316165);
-//        Stop s25 = new Stop("jawalkhel_n",27.672634, 85.313930);
-//        Stop s26 = new Stop("manbhawan_n",27.672153, 85.315956);
-//        Stop s27 = new Stop("kumaripati_n",27.670687, 85.320493);
-//        Stop s28 = new Stop("patan_hospital_n",27.669727, 85.321909);
-//        Stop s29 = new Stop("lagankhel_n",27.667031, 85.322473);
-
-
-        //markers
-
-
-        //Hash map for marker
-//        Map<String, String> stops = new HashMap<String, String>();
-//        stops.put("lagankhel_p", "27.667113, 85.322346");
-//        stops.put("patan_hospital_p", "27.668387, 85.321663");
-//        stops.put("kumaripati_p", "27.670801, 85.319957");
-//        stops.put("manbhawan_p", "27.672074, 85.315558");
-//        stops.put("jawlakhel_p", "27.672632, 85.313707");
-//        stops.put("pulchowk_p", "27.676070, 85.315721");
-//        stops.put("harihar_bhawan_pulchowk_p", "27.681087, 85.317402");
-//        stops.put("jwagal_kupondol_p", "27.685257, 85.318100");
-//        stops.put("kandewatathan_kupondol_p", "27.686757, 85.317133");
-//        stops.put("thaptahali_p", "27.687845, 85.316307");
-//        stops.put("maitighar_p", "27.694206, 85.319275");
-//        stops.put("singhadurbar_p", "27.694805, 85.320175");
-//        stops.put("bhadrakali_mandir_p", "27.699051, 85.317503");
-//        stops.put("sahid_gate_p", "27.699298, 85.317734");
-//        stops.put("ratnapark_p", "27.706788, 85.314730");
-//        stops.put("bhirkutimandap_p", "27.700914, 85.316609");
-//        stops.put("bhadrakali_mandir_n", "27.699298, 85.317734");
-//        stops.put("maitighar_n", "27.694088, 85.319397");
-//        stops.put("thapathali_n", "27.690458, 85.317760");
-//        stops.put("kupondole_n", "27.687641, 85.316763");
-//        stops.put("jwagal_kupondol_n", "27.685452, 85.318223");
-//        stops.put("harihar_bhawan_pulchowk_n", "27.681149, 85.317630");
-//        stops.put("pulchow_n", "27.676821, 85.316165");
-//        stops.put("jawalkhel_n", "27.672634, 85.313930");
-//        stops.put("manbhawan_n", "27.672153, 85.315956");
-//        stops.put("kumaripati_n", "27.670687, 85.320493");
-//        stops.put("patan_hospital_n", "27.669727, 85.321909");
-//        stops.put("lagankhel_n", "27.667031, 85.322473");
-//
 //        //Add marker on the map and add data object
 //        for (Map.Entry<String, String> entry : stops.entrySet()) {
 //            System.out.println(entry.getKey() + " = " + entry.getValue());
@@ -389,7 +405,8 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         destination = m_map.addMarker(new MarkerOptions()
                 .position(new LatLng(27.667113,85.322346))
                 .title("Set destination")
-                .draggable(true));
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin)));
         destination.showInfoWindow();
 
         m_map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -444,7 +461,70 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     @Override
     public void onInfoWindowClick(Marker marker) {
         getDeviceLocation();
-        Log.i("tag destination", "destination latlng the hustler:" + getdestinationLocation().latitude +" " + getdestinationLocation());
+    }
+
+    //setting geo context for navigation polylines
+    public GeoApiContext getGeoContext() {
+        GeoApiContext geoApiContext = new GeoApiContext();
+        String apiKey = "AIzaSyAg8TI4ZatrTjTgrSFUOoFaMXnEfKVlT3o";
+        return geoApiContext
+                .setQueryRateLimit(3)
+                .setApiKey(apiKey)
+                .setConnectTimeout(1, TimeUnit.SECONDS)
+                .setReadTimeout(1, TimeUnit.SECONDS)
+                .setWriteTimeout(1, TimeUnit.SECONDS);
+    }
+
+    public DirectionsResult getDirectionsDetails(String  origin, String destination) {
+        DateTime now = new DateTime();
+        try {
+            Log.i("tag direction", "initiating direction request");
+            return DirectionsApi.newRequest(getGeoContext())
+                    .mode(TravelMode.WALKING)
+                    .origin(origin)
+                    .destination(destination)
+                    .await();
+
+        } catch (ApiException e) {
+            e.printStackTrace();
+            return null;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void addPolyline(DirectionsResult results, GoogleMap m_map) {
+        List<LatLng> decodedPath = PolyUtil.decode(results.routes[overview].overviewPolyline.getEncodedPath());
+        m_map.addPolyline(new PolylineOptions().addAll(decodedPath));
+    }
+
+    //method for returning string address from coordinates location
+    public String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.w("My Current loction address", strReturnedAddress.toString());
+            } else {
+                Log.w("My Current loction address", "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.w("My Current loction address", "Canont get Address!");
+        }
+        return strAdd;
     }
 
 }

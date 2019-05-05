@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E3F2FD"
-    tools:context=".hotline">
+    >
 
 
 
@@ -15,22 +15,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/A100"
+            >
 
-        //texts
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="he"
+
                 android:textStyle="bold"
                 android:textAlignment="center"
-                android:textColor="#F06292"
+                android:textColor="#3E2723"
                 android:textSize="60px"
                 android:text="Metropolitan Police Office"
                 />
@@ -38,73 +36,126 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="50px"
-                android:textColor="#F8BBD0"
+                android:textColor="#5D4037"
                 android:text="Ranipokhari"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="55px"
-                android:textColor="@color/A100"
+                android:textColor="#FFC107"
                 android:text="014231466"
                 />
 
-        //texts
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="he"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textColor="#F06292"
-            android:textSize="60px"
-            android:text="Metropolitan Police Office"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="50px"
-            android:textColor="#F8BBD0"
-            android:text="Ranipokhari"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="55px"
-            android:textColor="@color/A100"
-            android:text="014231466"
-            />
 
-        //texts
-        <TextView
-            android:layout_width="wrap_content"
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="he"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textColor="#F06292"
-            android:textSize="60px"
-            android:text="Metropolitan Police Office"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="50px"
-            android:textColor="#F8BBD0"
-            android:text="Ranipokhari"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="55px"
-            android:textColor="@color/A100"
-            android:text="014231466"
-            />
+            android:orientation="vertical"
+            android:background="@color/A100"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="#3E2723"
+                android:textSize="60px"
+                android:text="Metropolitan Police Office"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="50px"
+                android:textColor="#5D4037"
+                android:text="Ranipokhari"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="55px"
+                android:textColor="#FFC107"
+                android:text="014231466"
+                />
 
 
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/A100"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="#3E2723"
+                android:textSize="60px"
+                android:text="Metropolitan Police Office"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="50px"
+                android:textColor="#5D4037"
+                android:text="Ranipokhari"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="55px"
+                android:textColor="#FFC107"
+                android:text="014231466"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/A100"
+            >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="#3E2723"
+                android:textSize="60px"
+                android:text="Metropolitan Police Office"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="50px"
+                android:textColor="#5D4037"
+                android:text="Ranipokhari"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="55px"
+                android:textColor="#FFC107"
+                android:text="014231466"
+                />
+
+
+        </LinearLayout>
 
 
     </LinearLayout>
+
 
 </FrameLayout>

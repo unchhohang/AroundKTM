@@ -19,10 +19,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.unchhohang.around_ktm.RouteLogic.Costs;
 import com.example.unchhohang.around_ktm.RouteLogic.InitiatingRace;
+import com.example.unchhohang.around_ktm.RouteLogic.NearestDistance;
 import com.example.unchhohang.around_ktm.RouteLogic.ReadyToRace;
 import com.example.unchhohang.around_ktm.RouteLogic.Stop;
 import com.example.unchhohang.around_ktm.RouteLogic.StopApi;
@@ -108,6 +111,10 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     //for hashmap of stop
     HashMap<String, Stop> dicStops = new HashMap<>();
 
+    int vehicleType;
+    private double tempoCost;
+    private double busCost;
+    private double microCost;
 
 
     @Override
@@ -160,6 +167,41 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     m_map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             }
         });
+
+        Button btnTempo = (Button) findViewById(R.id.btnTempo);
+        btnTempo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tvPrice = (TextView) findViewById(R.id.price);
+                tvPrice.setText("Price : " + tempoCost);
+
+            }
+        });
+        Button btnMicro = (Button) findViewById(R.id.btnMicro);
+        btnMicro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tvDisPrice = (TextView) findViewById(R.id.disPrice);
+                tvDisPrice.setText("Price : " + (microCost - (0.4 * microCost)));
+                TextView tvPrice = (TextView) findViewById(R.id.price);
+                tvPrice.setText("Price : " + microCost);
+
+            }
+        });
+        Button btnBus = (Button) findViewById(R.id.btnBus);
+        btnBus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tvDisPrice = (TextView) findViewById(R.id.disPrice);
+                tvDisPrice.setText("Price : " + (busCost - (0.4 * busCost)));
+                TextView tvPrice = (TextView) findViewById(R.id.price);
+                tvPrice.setText("Price : " + busCost);
+
+            }
+        });
+
+        //Bottom sheet buttons
+
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -237,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 Log.i("Retrofit", " " + t.getMessage());
             }
         });
+
     }
 
     @Override
@@ -341,6 +384,57 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                                             .title(paths.get(i).name)
                                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.bus)));
                                 }
+
+                                double totalDistance = readyToRace.getTotalDistance(paths);
+                                Log.i("Totall Distance :", " " + totalDistance);
+                                TextView tvDistance = (TextView)findViewById(R.id.totall_distance);
+                                tvDistance.setText("Totall distance through vehicle :" + totalDistance + "KM");
+
+                                final String stop_init = paths.get(0).name;
+                                final String stop_later = paths.get(paths.size()-1).name;
+
+                                //Running Retrofit
+                                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+                                Retrofit.Builder builder = new Retrofit.Builder()
+                                        .baseUrl("http://192.168.1.64/around_ktm_api/public/")
+                                        .addConverterFactory(GsonConverterFactory.create());
+
+                                Retrofit retrofit =
+                                        builder
+                                                .client(
+                                                        httpClient.build()
+                                                )
+                                                .build();
+                                StopApi stopApi = retrofit.create(StopApi.class);
+                                Call<List<Costs>> call = stopApi.getCosts();
+                                call.enqueue(new Callback<List<Costs>>() {
+                                    @Override
+                                    public void onResponse(Call<List<Costs>> call, Response<List<Costs>> response) {
+                                        List<Costs> costs = response.body();
+                                        for(Costs costs1 : costs){
+
+                                            Log.i("type : ", " " + costs1.type);
+                                            if(costs1.stopInit.equals(stop_init) && costs1.stopLater.equals(stop_later)
+                                                && costs1.type == 0){
+                                                tempoCost = costs1.cost;
+                                                Log.i("Tempo cost : ", "" + tempoCost);
+                                            }
+                                            else if(costs1.stopInit.equals(stop_init) && costs1.stopLater.equals(stop_later)
+                                                    && costs1.type == 1){
+                                                microCost = costs1.cost;
+                                            }else if(costs1.stopInit.equals(stop_init) && costs1.stopLater.equals(stop_later)
+                                                    && costs1.type == 2){
+                                                busCost = costs1.cost;
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<List<Costs>> call, Throwable t) {
+
+                                    }
+                                });
                                 //for getting the first stop in direction api
                                 Stop firstStop = paths.get(0);
                                 //get direction from source to start

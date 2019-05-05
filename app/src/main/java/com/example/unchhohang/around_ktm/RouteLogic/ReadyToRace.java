@@ -113,5 +113,15 @@ public class ReadyToRace {
 
 
     }
+
+    public double getTotalDistance(List<Stop> paths){
+        double totalDistance = 0.0;
+        for (int i=1;i<paths.size();i++){
+            totalDistance += NearestDistance.calculationByDistance(paths.get(i).getLatLng(),
+                    paths.get(i-1).getLatLng());
+
+        }
+        return  totalDistance;
+    }
 }
 

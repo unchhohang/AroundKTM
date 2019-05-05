@@ -61,23 +61,26 @@
             android:orientation="vertical"
             >
             <TextView
+                android:id="@+id/disPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Card discount price : 20"
+
                 android:textAlignment="center"
                 android:textSize="20dp"
                 />
             <TextView
+                android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="price : 10"
+
                 android:textAlignment="center"
                 android:textSize="20dp"
                 />
         <TextView
+            android:id="@+id/totall_distance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Distance : 2.5 KM"
+
             android:textAlignment="center"
             android:textSize="20dp"
             />

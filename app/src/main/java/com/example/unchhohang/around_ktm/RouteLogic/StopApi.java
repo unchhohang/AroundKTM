@@ -12,4 +12,7 @@ public interface StopApi
 
     @GET("allStops")
     Call<Stops> getStops();
+
+    @GET("getCost")
+    Call<List<Costs>> getCosts();
 }
